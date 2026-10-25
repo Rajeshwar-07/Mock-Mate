@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: mockmate-backend
+  main:
+    allow-circular-references: true   ← must be here, indented under spring
 
   datasource:
     url: ${DATABASE_URL}
