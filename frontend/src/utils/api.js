@@ -48,4 +48,12 @@ export const resumeApi = {
   delete: () => api.delete('/resume'),
 }
 
+export const adminApi = {
+  getStats: () => api.get('/admin/stats'),
+  getAllUsers: () => api.get('/admin/users'),
+  getAllInterviews: () => api.get('/admin/interviews'),
+  deleteUser: (id) => api.delete(`/admin/users/${id}`),
+  deleteInterview: (id) => api.delete(`/admin/interviews/${id}`),
+}
+
 export default api

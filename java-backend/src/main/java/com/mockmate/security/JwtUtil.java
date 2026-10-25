@@ -1,6 +1,7 @@
 package com.mockmate.security;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ public class JwtUtil {
 
     private SecretKey getKey() {
         byte[] keyBytes = secret.getBytes();
+        // Ensure key is at least 32 bytes for HS256
         if (keyBytes.length < 32) {
             byte[] padded = new byte[32];
             System.arraycopy(keyBytes, 0, padded, 0, keyBytes.length);

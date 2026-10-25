@@ -8,7 +8,7 @@ services:
     plan: free
     envVars:
       - key: GROQ_API_KEY
-        sync: false   # You fill this in Render dashboard
+        sync: false   # Add in Render dashboard → Environment
 
   # ── Service 2: Java Spring Boot Backend ──────────────────────────────
   - type: web
@@ -19,7 +19,7 @@ services:
     plan: free
     envVars:
       - key: DATABASE_URL
-        sync: false
+        sync: false   # Add in Render dashboard → Environment
       - key: DB_USERNAME
         sync: false
       - key: DB_PASSWORD
@@ -31,8 +31,8 @@ services:
       - key: MAIL_PASSWORD
         sync: false
       - key: AI_SERVICE_URL
-        sync: false   # Set to: https://mockmate-ai.onrender.com
+        sync: false   # https://mockmate-ai.onrender.com (after python deploys)
       - key: CORS_ALLOWED_ORIGINS
-        sync: false   # Set to: https://your-frontend.vercel.app
+        sync: false   # https://your-frontend.vercel.app
       - key: FRONTEND_URL
-        sync: false   # Set to: https://your-frontend.vercel.app
+        sync: false   # https://your-frontend.vercel.app

@@ -11,7 +11,7 @@ import os
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
-# Groq free model — fast LLaMA 3.1 70B
+# Groq model — GPT-OSS 120B
 MODEL = "openai/gpt-oss-120b"
 
 EXPERIENCE_CONTEXT = {
@@ -94,7 +94,7 @@ Return ONLY this JSON (no markdown):
 def evaluate_answer(req: EvaluateAnswerRequest) -> EvaluateAnswerResponse:
     keywords_str = ", ".join(req.expected_keywords)
 
-    prompt = f"""Evaluate this interview answer.
+    prompt = f"""Evaluate this interview answer and provide an ideal model answer.
 
 Question: {req.question}
 Candidate's Answer: {req.answer}
@@ -108,7 +108,8 @@ Return ONLY this JSON (no markdown):
   "feedback": "2-3 sentence constructive feedback here",
   "strengths": ["what they did well"],
   "improvements": ["what could be better"],
-  "keywords_matched": ["keywords candidate mentioned"]
+  "keywords_matched": ["keywords candidate mentioned"],
+  "ideal_answer": "A comprehensive 3-5 sentence model answer that a strong candidate would give, covering core concepts, practical examples, and trade-offs."
 }}
 
 Scoring guide:

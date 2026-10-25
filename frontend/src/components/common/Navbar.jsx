@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import useAuthStore from '../../store/authStore'
-import { Target, LayoutDashboard, History, LogOut, Plus } from 'lucide-react'
+import { Target, LayoutDashboard, History, LogOut, Plus, Shield } from 'lucide-react'
 
 export default function Navbar() {
   const navigate = useNavigate()
@@ -12,9 +12,12 @@ export default function Navbar() {
     navigate('/login')
   }
 
+  const isAdmin = user?.email?.includes('admin') || user?.id === 1
+
   const navLinks = [
     { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/history', label: 'History', icon: History },
+    ...(isAdmin ? [{ path: '/admin', label: 'Admin', icon: Shield }] : []),
   ]
 
   return (
@@ -32,7 +35,9 @@ export default function Navbar() {
             <button key={path} onClick={() => navigate(path)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                 location.pathname === path
-                  ? 'bg-indigo-900/40 text-indigo-300'
+                  ? path === '/admin'
+                    ? 'bg-red-900/40 text-red-300'
+                    : 'bg-indigo-900/40 text-indigo-300'
                   : 'text-slate-400 hover:text-white hover:bg-slate-800'
               }`}>
               <Icon size={14} /> {label}
@@ -50,7 +55,8 @@ export default function Navbar() {
             <div className="w-7 h-7 bg-indigo-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
               {user?.name?.[0]?.toUpperCase()}
             </div>
-            <button onClick={handleLogout} className="text-slate-400 hover:text-red-400 transition-colors">
+            <span className="text-slate-400 text-sm hidden sm:block max-w-24 truncate">{user?.name?.split(' ')[0]}</span>
+            <button onClick={handleLogout} className="text-slate-400 hover:text-red-400 transition-colors" title="Logout">
               <LogOut size={16} />
             </button>
           </div>

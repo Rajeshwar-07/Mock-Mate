@@ -43,4 +43,7 @@ public class Question {
 
     @Column(name = "ai_improvements", columnDefinition = "TEXT")
     private String aiImprovements;   // JSON array
+
+    @Column(name = "ideal_answer", columnDefinition = "TEXT")
+    private String idealAnswer;
 }

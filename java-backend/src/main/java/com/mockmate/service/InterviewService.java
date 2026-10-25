@@ -139,6 +139,9 @@ public class InterviewService {
         question.setAiFeedback((String) evaluation.get("feedback"));
         question.setAiStrengths(toJson((List<String>) evaluation.getOrDefault("strengths", List.of())));
         question.setAiImprovements(toJson((List<String>) evaluation.getOrDefault("improvements", List.of())));
+        if (evaluation.get("ideal_answer") != null) {
+            question.setIdealAnswer((String) evaluation.get("ideal_answer"));
+        }
         question = questionRepository.save(question);
 
         return buildQuestionResponse(question);
@@ -253,6 +256,7 @@ public class InterviewService {
                 .aiFeedback(q.getAiFeedback())
                 .aiStrengths(fromJson(q.getAiStrengths()))
                 .aiImprovements(fromJson(q.getAiImprovements()))
+                .idealAnswer(q.getIdealAnswer())
                 .build();
     }
 

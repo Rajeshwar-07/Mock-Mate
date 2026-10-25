@@ -15,4 +15,5 @@ public class QuestionResponse {
     private String aiFeedback;
     private List<String> aiStrengths;
     private List<String> aiImprovements;
+    private String idealAnswer;
 }

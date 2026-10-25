@@ -33,6 +33,7 @@ class EvaluateAnswerResponse(BaseModel):
     strengths: List[str]
     improvements: List[str]
     keywords_matched: List[str]
+    ideal_answer: Optional[str] = None
 
 class ParseResumeRequest(BaseModel):
     resume_text: str

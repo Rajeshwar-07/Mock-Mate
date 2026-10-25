@@ -7,6 +7,7 @@ import SetupPage from './pages/SetupPage'
 import InterviewPage from './pages/InterviewPage'
 import ResultPage from './pages/ResultPage'
 import HistoryPage from './pages/HistoryPage'
+import AdminPage from './pages/AdminPage'
 
 function PrivateRoute({ children }) {
   const { token } = useAuthStore()
@@ -24,6 +25,7 @@ export default function App() {
       <Route path="/interview/:token" element={<PrivateRoute><InterviewPage /></PrivateRoute>} />
       <Route path="/result/:token" element={<PrivateRoute><ResultPage /></PrivateRoute>} />
       <Route path="/history" element={<PrivateRoute><HistoryPage /></PrivateRoute>} />
+      <Route path="/admin" element={<PrivateRoute><AdminPage /></PrivateRoute>} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   )
