@@ -12,7 +12,7 @@ import os
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 # Groq free model — fast LLaMA 3.1 70B
-MODEL = "llama-3.1-70b-versatile"
+MODEL = "openai/gpt-oss-120b"
 
 EXPERIENCE_CONTEXT = {
     "FRESHER": "0-1 year, focus on fundamentals, basic concepts, simple coding",
