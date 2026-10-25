@@ -5,7 +5,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
@@ -17,31 +17,37 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    private Key getKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes());
+    private SecretKey getKey() {
+        byte[] keyBytes = secret.getBytes();
+        if (keyBytes.length < 32) {
+            byte[] padded = new byte[32];
+            System.arraycopy(keyBytes, 0, padded, 0, keyBytes.length);
+            keyBytes = padded;
+        }
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public String generateToken(String email) {
         return Jwts.builder()
-                .setSubject(email)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getKey(), SignatureAlgorithm.HS256)
+                .subject(email)
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getKey())
                 .compact();
     }
 
     public String extractEmail(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getKey())
+        return Jwts.parser()
+                .verifyWith(getKey())
                 .build()
-                .parseClaimsJws(token)
-                .getBody()
+                .parseSignedClaims(token)
+                .getPayload()
                 .getSubject();
     }
 
     public boolean isTokenValid(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(token);
+            Jwts.parser().verifyWith(getKey()).build().parseSignedClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             return false;
