@@ -1,0 +1,38 @@
+services:
+  # ── Service 1: Python AI (Groq / LLaMA) ─────────────────────────────
+  - type: web
+    name: mockmate-ai
+    runtime: docker
+    dockerfilePath: ./python-ai/Dockerfile
+    dockerContext: ./python-ai
+    plan: free
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false   # You fill this in Render dashboard
+
+  # ── Service 2: Java Spring Boot Backend ──────────────────────────────
+  - type: web
+    name: mockmate-backend
+    runtime: docker
+    dockerfilePath: ./java-backend/Dockerfile
+    dockerContext: ./java-backend
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      - key: AI_SERVICE_URL
+        sync: false   # Set to: https://mockmate-ai.onrender.com
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false   # Set to: https://your-frontend.vercel.app
+      - key: FRONTEND_URL
+        sync: false   # Set to: https://your-frontend.vercel.app

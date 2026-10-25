@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  python-ai:
+    build: ./python-ai
+    container_name: mockmate-ai
+    ports:
+      - "8000:8000"
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    restart: unless-stopped
+
+  java-backend:
+    build: ./java-backend
+    container_name: mockmate-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - AI_SERVICE_URL=http://python-ai:8000
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-http://localhost:5173}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:5173}
+    depends_on:
+      - python-ai
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: mockmate-frontend
+    ports:
+      - "5173:80"
+    environment:
+      - VITE_API_URL=http://localhost:8080/api
+    depends_on:
+      - java-backend
+    restart: unless-stopped
